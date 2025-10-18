@@ -20,9 +20,9 @@ import { useTheme } from 'next-themes'
 import toast from 'react-hot-toast'
 
 export default function DashboardPage() {
-  const [user, setUser] = useState(null)
-  const [agents, setAgents] = useState([])
-  const [distributions, setDistributions] = useState([])
+  const [user, setUser] = useState<any>(null)
+  const [agents, setAgents] = useState<any[]>([])
+  const [distributions, setDistributions] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const router = useRouter()
