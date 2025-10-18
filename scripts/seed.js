@@ -5,7 +5,7 @@ require('dotenv').config({ path: '.env.local' })
 // Import the User model (we'll use require since this is a .js file)
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI)
+    await mongoose.connect(process.env.MONGO_URI)
     console.log('✅ Connected to MongoDB')
   } catch (error) {
     console.error('❌ MongoDB connection error:', error)
