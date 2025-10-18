@@ -125,11 +125,14 @@ export default function UploadModal({ open, onClose, onSuccess }: UploadModalPro
               className="hidden"
               id="file-upload"
             />
-            <label htmlFor="file-upload">
-              <Button type="button" variant="outline" className="cursor-pointer">
-                Choose File
-              </Button>
-            </label>
+            <Button 
+              type="button" 
+              variant="outline" 
+              onClick={() => document.getElementById('file-upload')?.click()}
+              className="cursor-pointer"
+            >
+              Choose File
+            </Button>
           </div>
 
           <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">

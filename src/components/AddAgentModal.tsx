@@ -40,16 +40,22 @@ export default function AddAgentModal({ open, onClose, onSuccess }: AddAgentModa
   const onSubmit = async (data: AgentForm) => {
     setIsLoading(true)
     try {
+      console.log('Submitting agent data:', data)
+      const token = localStorage.getItem('token')
+      console.log('Token:', token ? 'Present' : 'Missing')
+      
       const response = await fetch('/api/agents/add', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(data),
       })
 
+      console.log('Response status:', response.status)
       const result = await response.json()
+      console.log('Response data:', result)
 
       if (response.ok) {
         toast.success('Agent added successfully! 🎉')
@@ -60,6 +66,7 @@ export default function AddAgentModal({ open, onClose, onSuccess }: AddAgentModa
         toast.error(result.message || 'Failed to add agent')
       }
     } catch (error) {
+      console.error('Add agent error:', error)
       toast.error('Network error. Please try again.')
     } finally {
       setIsLoading(false)

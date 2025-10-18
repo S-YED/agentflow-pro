@@ -1,51 +1,20 @@
 import mongoose from 'mongoose'
 
-const MONGODB_URI = process.env.MONGODB_URI
-
-if (!MONGODB_URI && process.env.NODE_ENV !== 'production') {
-  throw new Error('Please define the MONGODB_URI environment variable inside .env.local')
-}
-
-interface MongooseCache {
-  conn: typeof mongoose | null
-  promise: Promise<typeof mongoose> | null
-}
-
-declare global {
-  var mongoose: MongooseCache | undefined
-}
-
-let cached: MongooseCache = globalThis.mongoose || { conn: null, promise: null }
-
-if (!globalThis.mongoose) {
-  globalThis.mongoose = cached
-}
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/agentflow-pro'
 
 async function connectDB() {
-  if (!MONGODB_URI) {
-    throw new Error('Please define the MONGODB_URI environment variable')
-  }
-
-  if (cached.conn) {
-    return cached.conn
-  }
-
-  if (!cached.promise) {
-    const opts = {
-      bufferCommands: false,
-    }
-
-    cached.promise = mongoose.connect(MONGODB_URI, opts)
-  }
-
   try {
-    cached.conn = await cached.promise
-  } catch (e) {
-    cached.promise = null
-    throw e
+    if (mongoose.connections[0].readyState) {
+      return mongoose
+    }
+    
+    await mongoose.connect(MONGODB_URI)
+    console.log('MongoDB connected successfully')
+    return mongoose
+  } catch (error) {
+    console.error('MongoDB connection error:', error)
+    throw error
   }
-
-  return cached.conn
 }
 
 export default connectDB

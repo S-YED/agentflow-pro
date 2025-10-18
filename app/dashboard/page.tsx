@@ -105,7 +105,7 @@ export default function DashboardPage() {
       )}
 
       {/* Sidebar */}
-      <div className={`fixed left-0 top-0 h-full w-80 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 z-50 transform transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 lg:static lg:z-auto`}>
+      <div className={`fixed left-0 top-0 h-full w-80 backdrop-blur-md bg-white/90 dark:bg-gray-800/90 border-r border-gray-200/50 dark:border-gray-700/50 z-50 transform transition-transform duration-300 rounded-r-3xl ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 lg:static lg:z-auto`}>
         <div className="p-6">
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center space-x-3">
@@ -113,8 +113,8 @@ export default function DashboardPage() {
                 <Users className="w-5 h-5 text-white dark:text-gray-900" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900 dark:text-white">AgentFlow Pro</h1>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Enterprise Platform</p>
+                <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">AgentFlow Pro</h1>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Distribution System</p>
               </div>
             </div>
             <Button
@@ -183,7 +183,7 @@ export default function DashboardPage() {
       {/* Main Content */}
       <div className="flex-1 lg:ml-0">
         {/* Header */}
-        <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-30">
+        <header className="backdrop-blur-md bg-white/80 dark:bg-gray-900/80 border-b border-gray-200/50 dark:border-gray-700/50 sticky top-0 z-30 rounded-b-3xl mx-4 mt-2">
           <div className="px-6 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
@@ -196,7 +196,7 @@ export default function DashboardPage() {
                   <Menu className="w-5 h-5" />
                 </Button>
                 <div>
-                  <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <h1 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
                     Welcome back, {user?.name} 👋
                   </h1>
                   <p className="text-gray-600 dark:text-gray-400">

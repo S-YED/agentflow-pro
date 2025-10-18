@@ -14,27 +14,54 @@ const agentSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
+    console.log('=== Add Agent API Called ===')
+    
+    // Parse request body first
+    const body = await request.json()
+    console.log('Request body:', body)
+    
+    // Validate input
+    const { name, email, mobile, password } = agentSchema.parse(body)
+    console.log('Validation passed')
+    
     // Check authentication
-    const token = request.headers.get('authorization')?.replace('Bearer ', '')
+    const authHeader = request.headers.get('authorization')
+    const token = authHeader?.replace('Bearer ', '')
+    
     if (!token) {
+      console.log('No token provided')
       return NextResponse.json(
         { success: false, message: 'No token provided' },
         { status: 401 }
       )
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any
+    const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-in-production-min-32-chars-long-for-security'
+    
+    let decoded: any
+    try {
+      decoded = jwt.verify(token, JWT_SECRET)
+      console.log('Token decoded:', decoded)
+    } catch (jwtError) {
+      console.log('JWT verification failed:', jwtError)
+      return NextResponse.json(
+        { success: false, message: 'Invalid token' },
+        { status: 401 }
+      )
+    }
+    
     if (decoded.role !== 'admin') {
+      console.log('User is not admin:', decoded.role)
       return NextResponse.json(
         { success: false, message: 'Admin access required' },
         { status: 403 }
       )
     }
 
+    // Connect to database
+    console.log('Connecting to database...')
     await connectDB()
-    
-    const body = await request.json()
-    const { name, email, mobile, password } = agentSchema.parse(body)
+    console.log('Database connected')
 
     // Validate phone number
     try {
@@ -53,8 +80,10 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if email already exists
+    console.log('Checking for existing user...')
     const existingUser = await User.findOne({ email })
     if (existingUser) {
+      console.log('Email already exists')
       return NextResponse.json(
         { success: false, message: 'Email already exists' },
         { status: 400 }
@@ -62,6 +91,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create new agent
+    console.log('Creating new agent...')
     const agent = new User({
       name,
       email,
@@ -71,11 +101,18 @@ export async function POST(request: NextRequest) {
     })
 
     await agent.save()
+    console.log('Agent saved successfully')
 
     return NextResponse.json({
       success: true,
       message: 'Agent created successfully',
-      agent: agent.toJSON()
+      agent: {
+        id: agent._id,
+        name: agent.name,
+        email: agent.email,
+        mobile: agent.mobile,
+        role: agent.role
+      }
     })
 
   } catch (error) {
@@ -89,7 +126,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json(
-      { success: false, message: 'Internal server error' },
+      { success: false, message: 'Internal server error: ' + (error as Error).message },
       { status: 500 }
     )
   }
