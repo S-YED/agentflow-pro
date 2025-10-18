@@ -18,6 +18,9 @@ import {
 import { Button } from '@/src/components/ui/button'
 import { useTheme } from 'next-themes'
 import toast from 'react-hot-toast'
+import AddAgentModal from '@/src/components/AddAgentModal'
+import UploadModal from '@/src/components/UploadModal'
+import DistributionsTable from '@/src/components/DistributionsTable'
 
 export default function DashboardPage() {
   const [user, setUser] = useState<any>(null)
@@ -25,6 +28,8 @@ export default function DashboardPage() {
   const [distributions, setDistributions] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [showAddAgent, setShowAddAgent] = useState(false)
+  const [showUpload, setShowUpload] = useState(false)
   const router = useRouter()
   const { theme, setTheme } = useTheme()
 
@@ -43,12 +48,31 @@ export default function DashboardPage() {
 
   const fetchData = async () => {
     try {
-      // Simulate API calls for now
-      setAgents([
-        { _id: '1', name: 'John Doe', email: 'john@example.com', mobile: '+1234567890', role: 'agent' },
-        { _id: '2', name: 'Jane Smith', email: 'jane@example.com', mobile: '+0987654321', role: 'agent' },
-      ])
-      setDistributions([])
+      const token = localStorage.getItem('token')
+      
+      // Fetch agents
+      const agentsResponse = await fetch('/api/agents', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      
+      if (agentsResponse.ok) {
+        const agentsData = await agentsResponse.json()
+        setAgents(agentsData.agents || [])
+      }
+      
+      // Fetch distributions
+      const distributionsResponse = await fetch('/api/lists/distributed', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      
+      if (distributionsResponse.ok) {
+        const distributionsData = await distributionsResponse.json()
+        setDistributions(distributionsData.lists || [])
+      }
     } catch (error) {
       toast.error('Failed to fetch data')
     } finally {
@@ -81,12 +105,7 @@ export default function DashboardPage() {
       )}
 
       {/* Sidebar */}
-      <motion.div
-        initial={{ x: -300 }}
-        animate={{ x: sidebarOpen ? 0 : -300 }}
-        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className="fixed left-0 top-0 h-full w-80 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 z-50 lg:translate-x-0 lg:static lg:z-auto"
-      >
+      <div className={`fixed left-0 top-0 h-full w-80 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 z-50 transform transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 lg:static lg:z-auto`}>
         <div className="p-6">
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center space-x-3">
@@ -159,10 +178,10 @@ export default function DashboardPage() {
             </Button>
           </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* Main Content */}
-      <div className="lg:ml-80">
+      <div className="lg:ml-80 min-h-screen">
         {/* Header */}
         <header className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-200 dark:border-gray-700 sticky top-0 z-30">
           <div className="px-6 py-4">
@@ -257,6 +276,7 @@ export default function DashboardPage() {
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Quick Actions</h2>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button 
+                onClick={() => setShowAddAgent(true)}
                 variant="success"
                 className="flex-1 h-12 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600"
               >
@@ -264,6 +284,7 @@ export default function DashboardPage() {
                 Add Agent
               </Button>
               <Button 
+                onClick={() => setShowUpload(true)}
                 className="flex-1 h-12 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600"
               >
                 <Upload className="w-5 h-5 mr-2" />
@@ -315,8 +336,32 @@ export default function DashboardPage() {
               </div>
             )}
           </motion.div>
+
+          {/* Distributed Lists Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="luxury-card p-6"
+          >
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">Distributed Lists</h2>
+            <DistributionsTable distributions={distributions} />
+          </motion.div>
         </main>
       </div>
+
+      {/* Modals */}
+      <AddAgentModal
+        open={showAddAgent}
+        onClose={() => setShowAddAgent(false)}
+        onSuccess={fetchData}
+      />
+      
+      <UploadModal
+        open={showUpload}
+        onClose={() => setShowUpload(false)}
+        onSuccess={fetchData}
+      />
     </div>
   )
 }
