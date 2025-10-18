@@ -6,18 +6,19 @@ if (!MONGODB_URI) {
   throw new Error('Please define the MONGODB_URI environment variable inside .env.local')
 }
 
-// Extend global type to include mongoose
-declare global {
-  var mongoose: {
-    conn: typeof mongoose | null
-    promise: Promise<typeof mongoose> | null
-  }
+interface MongooseCache {
+  conn: typeof mongoose | null
+  promise: Promise<typeof mongoose> | null
 }
 
-let cached = globalThis.mongoose
+declare global {
+  var mongoose: MongooseCache | undefined
+}
 
-if (!cached) {
-  cached = globalThis.mongoose = { conn: null, promise: null }
+let cached: MongooseCache = globalThis.mongoose || { conn: null, promise: null }
+
+if (!globalThis.mongoose) {
+  globalThis.mongoose = cached
 }
 
 async function connectDB() {
@@ -30,9 +31,7 @@ async function connectDB() {
       bufferCommands: false,
     }
 
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
-      return mongoose
-    })
+    cached.promise = mongoose.connect(MONGODB_URI, opts)
   }
 
   try {
