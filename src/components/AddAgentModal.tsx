@@ -113,7 +113,7 @@ export default function AddAgentModal({ open, onClose, onSuccess }: AddAgentModa
             <label className="text-sm font-medium">Mobile Number</label>
             <Input
               {...register('mobile')}
-              placeholder="Enter mobile with country code"
+              placeholder="e.g. +1234567890 (include country code)"
               error={!!errors.mobile}
             />
             {errors.mobile && (
