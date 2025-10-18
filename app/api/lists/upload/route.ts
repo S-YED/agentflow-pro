@@ -24,7 +24,7 @@ function parseCSV(buffer: Buffer): Promise<any[]> {
           .filter((row) => row.firstName && row.phone)
         resolve(parsed)
       },
-      error: (error) => reject(error),
+      error: (error: any) => reject(error),
     })
   })
 }
