@@ -53,7 +53,7 @@ export default function DistributionsTable({ distributions }: DistributionsTable
   return (
     <div className="space-y-4">
       {distributions.map((distribution) => (
-        <div key={distribution._id} className="luxury-card p-0 overflow-hidden">
+        <div key={distribution._id} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
           {/* Header Row */}
           <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800">
             <div className="flex items-center space-x-4">

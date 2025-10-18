@@ -88,14 +88,14 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 dark:border-white"></div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex">
       {/* Mobile Sidebar Overlay */}
       {sidebarOpen && (
         <div 
@@ -105,7 +105,7 @@ export default function DashboardPage() {
       )}
 
       {/* Sidebar */}
-      <div className={`fixed left-0 top-0 h-full w-80 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 z-50 transform transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 lg:static lg:z-auto`}>
+      <div className={`fixed left-0 top-0 h-full w-80 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 z-50 transform transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 lg:static lg:z-auto`}>
         <div className="p-6">
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center space-x-3">
@@ -128,7 +128,7 @@ export default function DashboardPage() {
           </div>
 
           {/* User Profile */}
-          <div className="luxury-card p-4 mb-6">
+          <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-xl mb-6">
             <div className="flex items-center space-x-3">
               <div className="w-12 h-12 bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-200 rounded-full flex items-center justify-center">
                 <span className="text-white dark:text-gray-900 font-semibold text-lg">
@@ -137,7 +137,7 @@ export default function DashboardPage() {
               </div>
               <div>
                 <h3 className="font-semibold text-gray-900 dark:text-white">{user?.name}</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">{user?.role}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400 capitalize">{user?.role}</p>
               </div>
             </div>
           </div>
@@ -181,9 +181,9 @@ export default function DashboardPage() {
       </div>
 
       {/* Main Content */}
-      <div className="lg:ml-80 min-h-screen">
+      <div className="flex-1 lg:ml-0">
         {/* Header */}
-        <header className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-200 dark:border-gray-700 sticky top-0 z-30">
+        <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-30">
           <div className="px-6 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
@@ -216,7 +216,7 @@ export default function DashboardPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="luxury-card p-6 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 border-blue-200 dark:border-blue-700"
+              className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-blue-200 dark:border-blue-700 shadow-sm"
             >
               <div className="flex items-center justify-between">
                 <div>
@@ -233,7 +233,7 @@ export default function DashboardPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="luxury-card p-6 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 border-green-200 dark:border-green-700"
+              className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-green-200 dark:border-green-700 shadow-sm"
             >
               <div className="flex items-center justify-between">
                 <div>
@@ -250,7 +250,7 @@ export default function DashboardPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="luxury-card p-6 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 border-purple-200 dark:border-purple-700"
+              className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-purple-200 dark:border-purple-700 shadow-sm"
             >
               <div className="flex items-center justify-between">
                 <div>
@@ -271,7 +271,7 @@ export default function DashboardPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="luxury-card p-6"
+            className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm"
           >
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Quick Actions</h2>
             <div className="flex flex-col sm:flex-row gap-4">
@@ -298,7 +298,7 @@ export default function DashboardPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="luxury-card p-6"
+            className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm"
           >
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">Recent Agents</h2>
             {agents.length === 0 ? (
@@ -314,7 +314,7 @@ export default function DashboardPage() {
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.1 * index }}
-                    className="p-4 bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-700 rounded-xl border border-gray-200 dark:border-gray-600 hover:shadow-lg transition-all duration-300"
+                    className="p-4 bg-gray-50 dark:bg-gray-700 rounded-xl border border-gray-200 dark:border-gray-600 hover:shadow-lg transition-all duration-300"
                   >
                     <div className="flex items-center space-x-3 mb-3">
                       <div className="w-10 h-10 bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-200 rounded-lg flex items-center justify-center">
@@ -324,7 +324,7 @@ export default function DashboardPage() {
                       </div>
                       <div>
                         <h3 className="font-semibold text-gray-900 dark:text-white">{agent.name}</h3>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">{agent.role}</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 capitalize">{agent.role}</p>
                       </div>
                     </div>
                     <div className="space-y-1 text-sm text-gray-600 dark:text-gray-300">
@@ -342,7 +342,7 @@ export default function DashboardPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
-            className="luxury-card p-6"
+            className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm"
           >
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">Distributed Lists</h2>
             <DistributionsTable distributions={distributions} />
