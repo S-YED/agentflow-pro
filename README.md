@@ -129,4 +129,4 @@ MIT License - feel free to use for learning and projects.
 
 ---
 
-**Built with ❤️ using Next.js and MongoDB**
+**Built by Syed Khaja Moinuddin using Next.js and MongoDB**
