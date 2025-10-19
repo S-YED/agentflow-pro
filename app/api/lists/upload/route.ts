@@ -6,6 +6,8 @@ import connectDB from '@/src/lib/mongodb'
 import User from '@/models/User'
 import DistributedList from '@/models/DistributedList'
 
+export const dynamic = 'force-dynamic'
+
 // Parse CSV file
 function parseCSV(buffer: Buffer): Promise<any[]> {
   return new Promise((resolve, reject) => {

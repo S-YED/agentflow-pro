@@ -3,6 +3,8 @@ import jwt from 'jsonwebtoken'
 import connectDB from '@/src/lib/mongodb'
 import User from '@/models/User'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: NextRequest) {
   try {
     // Check authentication

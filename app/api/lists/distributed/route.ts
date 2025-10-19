@@ -3,6 +3,8 @@ import jwt from 'jsonwebtoken'
 import connectDB from '@/src/lib/mongodb'
 import DistributedList from '@/models/DistributedList'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: NextRequest) {
   try {
     // Check authentication

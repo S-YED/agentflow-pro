@@ -4,6 +4,8 @@ import { z } from 'zod'
 import connectDB from '@/src/lib/mongodb'
 import User from '@/models/User'
 
+export const dynamic = 'force-dynamic'
+
 const loginSchema = z.object({
   email: z.string().email('Invalid email format'),
   password: z.string().min(6, 'Password must be at least 6 characters')
