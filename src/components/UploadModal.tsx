@@ -141,7 +141,7 @@ export default function UploadModal({ open, onClose, onSuccess }: UploadModalPro
               <li>• Supported formats: CSV, XLSX, XLS</li>
               <li>• Maximum file size: 5MB</li>
               <li>• Required columns: FirstName, Phone, Notes</li>
-              <li>• At least 5 agents required for distribution</li>
+              <li>• At least 1 agent required for distribution</li>
             </ul>
           </div>
 

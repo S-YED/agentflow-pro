@@ -44,16 +44,14 @@ function parseExcel(buffer: Buffer): any[] {
     .filter((row) => row.firstName && row.phone)
 }
 
-// Distribute items equally among top 5 agents
+// Distribute items equally among all available agents
 function distributeItems(items: any[], agents: any[]) {
-  if (agents.length < 5) {
-    throw new Error(`At least 5 agents are required for distribution. Currently have ${agents.length} agents.`)
+  if (agents.length === 0) {
+    throw new Error('No agents available for distribution')
   }
 
-  // Use top 5 agents (most recently created)
-  const topAgents = agents.slice(0, 5)
   const totalItems = items.length
-  const agentCount = topAgents.length
+  const agentCount = agents.length
   
   if (totalItems === 0) {
     throw new Error('No valid items found in the uploaded file')
@@ -62,7 +60,7 @@ function distributeItems(items: any[], agents: any[]) {
   const baseCount = Math.floor(totalItems / agentCount)
   const remainder = totalItems % agentCount
 
-  const distributions = topAgents.map((agent, index) => {
+  const distributions = agents.map((agent, index) => {
     const itemCount = baseCount + (index < remainder ? 1 : 0)
     const startIndex = index * baseCount + Math.min(index, remainder)
     const endIndex = startIndex + itemCount
@@ -152,14 +150,13 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Get top 5 agents (most recently created)
+    // Get all available agents
     const agents = await User.find({ role: 'agent' })
       .sort({ createdAt: -1 })
-      .limit(5)
 
-    if (agents.length < 5) {
+    if (agents.length === 0) {
       return NextResponse.json(
-        { success: false, message: `At least 5 agents are required for distribution. Currently have ${agents.length} agents.` },
+        { success: false, message: 'No agents available for distribution. Please add agents first.' },
         { status: 400 }
       )
     }

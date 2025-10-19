@@ -1,6 +1,6 @@
 # AgentFlow Pro - Admin Agent Management System
 
-A complete MERN stack application for managing agents and distributing CSV lists equally among top 5 agents.
+A complete MERN stack application for managing agents and distributing CSV lists equally among all available agents.
 
 ## 🚀 Live Demo
 
@@ -15,7 +15,7 @@ A complete MERN stack application for managing agents and distributing CSV lists
 - ✅ **Admin Login** - JWT authentication
 - ✅ **Agent Management** - Add agents with validation
 - ✅ **CSV Upload** - Upload CSV/Excel files
-- ✅ **Auto Distribution** - Equally distribute among top 5 agents
+- ✅ **Auto Distribution** - Equally distribute among all available agents
 - ✅ **Professional UI** - Modern glassmorphism design
 - ✅ **Mobile Responsive** - Works on all devices
 
@@ -63,12 +63,12 @@ Open http://localhost:3000
 ### 2. Add Agents
 - Click "Add Agent" button
 - Fill: Name, Email, Mobile (+country code), Password
-- Need minimum 5 agents for distribution
+- Add any number of agents for distribution
 
 ### 3. Upload & Distribute Lists
 - Click "Upload List" button
 - Upload CSV/Excel with columns: `FirstName`, `Phone`, `Notes`
-- System automatically distributes equally among top 5 agents
+- System automatically distributes equally among all available agents
 - View results in distribution table
 
 ## 📁 CSV File Format
@@ -89,9 +89,13 @@ NODE_ENV=development
 
 ## 📊 Distribution Algorithm
 
-- **Equal Distribution**: Items divided equally among 5 agents
-- **Remainder Handling**: Extra items given to first agents
-- **Example**: 27 items → [6, 6, 5, 5, 5]
+- **Flexible Distribution**: Items divided equally among all available agents
+- **Equal Distribution**: totalItems ÷ totalAgents
+- **Remainder Handling**: Extra items distributed sequentially to first agents
+- **Examples**: 
+  - 27 items, 5 agents → [6, 6, 5, 5, 5]
+  - 20 items, 3 agents → [7, 7, 6]
+  - 10 items, 4 agents → [3, 3, 2, 2]
 
 ## 🚀 Deployment
 
