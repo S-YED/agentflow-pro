@@ -86,6 +86,33 @@ export default function DashboardPage() {
     router.push('/login')
   }
 
+  const handleDeleteAgent = async (agentId: string) => {
+    if (!confirm('Are you sure you want to delete this agent?')) {
+      return
+    }
+
+    try {
+      const token = localStorage.getItem('token')
+      const response = await fetch(`/api/agents/delete?id=${agentId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+
+      const result = await response.json()
+
+      if (response.ok) {
+        toast.success('Agent deleted successfully')
+        fetchData()
+      } else {
+        toast.error(result.message || 'Failed to delete agent')
+      }
+    } catch (error) {
+      toast.error('Network error. Please try again.')
+    }
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
@@ -331,6 +358,14 @@ export default function DashboardPage() {
                       <p>{agent.email}</p>
                       <p>{agent.mobile}</p>
                     </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleDeleteAgent(agent._id)}
+                      className="mt-2 w-full text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
+                    >
+                      Delete Agent
+                    </Button>
                   </motion.div>
                 ))}
               </div>
